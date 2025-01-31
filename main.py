@@ -1,17 +1,27 @@
-# Set a value for power and turn one of the leds accordingly
+# Make the value of power change through time
 
-import machine
+from machine import Pin
+from time import sleep
 
-power = 49
+power = 55
 
 # configure LED Pin as an output pin and create and led object for Pin class
 # then make the led blink in an infinite loop
-red = machine.Pin(4, machine.Pin.OUT)
-green = machine.Pin(5, machine.Pin.OUT)
+red = Pin(4, Pin.OUT)
+green = Pin(5, Pin.OUT)
 
-if power > 50:
-    light = green
-else:
-    light = red
 
-light.on()
+def swapLights(light1, light2):
+    light1.on()
+    light2.off()
+
+
+while True:
+    for power in range(101):
+        if power == 0:
+            swapLights(red, green)
+        if power == 50:
+            swapLights(green, red)
+
+        print(power)
+        sleep(0.2)
