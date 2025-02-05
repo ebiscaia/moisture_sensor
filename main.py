@@ -20,4 +20,13 @@ def swapLights(light1, light2):
 
 
 while True:
+    board.on()
+    adc_moisture_converted = adc_moisture_value.read_u16() * conversion_factor
+    adc_battery_converted = adc_battery_value.read_u16() * conversion_factor
+    if adc_moisture_converted >= 2.5:
+        swapLights(red, green)
+    else:
+        swapLights(green, red)
+
+    print(f"Moisture: {adc_moisture_converted} || Battery: {adc_battery_converted}")
     sleep(10)
