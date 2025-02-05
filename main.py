@@ -17,11 +17,4 @@ def swapLights(light1, light2):
 
 
 while True:
-    for power in range(101):
-        if power == 0:
-            swapLights(red, green)
-        if power == 50:
-            swapLights(green, red)
-
-        print(f"Power: {power} | ADC: {adc_value.read_u16()}")
         sleep(0.2)
