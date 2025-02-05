@@ -6,8 +6,8 @@ from time import sleep
 # configure LED Pin as an output pin and create and led object for Pin class
 # then make the led blink in an infinite loop
 board = Pin("LED", Pin.OUT)
-red = Pin(4, Pin.OUT)
-green = Pin(5, Pin.OUT)
+red_moisture = Pin(4, Pin.OUT)
+green_moisture = Pin(5, Pin.OUT)
 
 adc_moisture_value = ADC(27)
 adc_battery_value = ADC(28)
@@ -24,9 +24,9 @@ while True:
     adc_moisture_converted = adc_moisture_value.read_u16() * conversion_factor
     adc_battery_converted = adc_battery_value.read_u16() * conversion_factor
     if adc_moisture_converted >= 2.5:
-        swapLights(red, green)
+        swapLights(red_moisture, green_moisture)
     else:
-        swapLights(green, red)
+        swapLights(green_moisture, red_moisture)
 
     print(f"Moisture: {adc_moisture_converted} || Battery: {adc_battery_converted}")
     sleep(10)
