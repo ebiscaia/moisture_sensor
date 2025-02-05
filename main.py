@@ -17,4 +17,4 @@ def swapLights(light1, light2):
 
 
 while True:
-        sleep(0.2)
+    sleep(10)
