@@ -12,7 +12,7 @@ red_battery = Pin(15, Pin.OUT)
 green_battery = Pin(14, Pin.OUT)
 
 adc_moisture_value = ADC(27)
-adc_battery_value = ADC(28)
+adc_battery_value = ADC(26)
 conversion_factor = 3.3 / 65536
 
 
