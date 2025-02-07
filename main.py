@@ -21,18 +21,27 @@ def swapLights(light1, light2):
     light2.off()
 
 
+def checkCondition(measurement, threshold, light_good, light_bad):
+    if measurement >= threshold:
+        swapLights(light_good, light_bad)
+    else:
+        swapLights(light_bad, light_good)
+
+
 while True:
     board.on()
     adc_moisture_converted = 3.3 - adc_moisture_value.read_u16() * conversion_factor
     adc_battery_converted = adc_battery_value.read_u16() * conversion_factor
-    if adc_moisture_converted <= 0.8:
-        swapLights(red_moisture, green_moisture)
-    else:
-        swapLights(green_moisture, red_moisture)
-    if adc_battery_converted <= 1:
-        swapLights(red_battery, green_battery)
-    else:
-        swapLights(green_battery, red_battery)
+    # if adc_moisture_converted <= 0.8:
+    #     swapLights(red_moisture, green_moisture)
+    # else:
+    #     swapLights(green_moisture, red_moisture)
+    # if adc_battery_converted <= 1:
+    #     swapLights(red_battery, green_battery)
+    # else:
+    #     swapLights(green_battery, red_battery)
+    checkCondition(adc_moisture_converted, 0.8, green_moisture, red_moisture)
+    checkCondition(adc_battery_converted, 1, green_battery, red_battery)
 
     print(f"Moisture: {adc_moisture_converted} || Battery: {adc_battery_converted}")
     sleep(10)
