@@ -2,6 +2,7 @@
 
 from machine import Pin, ADC
 from time import sleep
+import json
 
 # configure LED Pin as an output pin and create and led object for Pin class
 # then make the led blink in an infinite loop
@@ -29,6 +30,11 @@ def checkCondition(measurement, threshold, light_good, light_bad):
 
 
 sleep(5)
+with open("wifi.json") as wifi_file:
+    wifi_config = json.load(wifi_file)
+
+print(wifi_config["ssid"])
+
 while True:
     board.on()
     adc_moisture_converted = 3.3 - adc_moisture_value.read_u16() * conversion_factor
