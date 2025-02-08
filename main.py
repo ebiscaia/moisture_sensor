@@ -41,7 +41,7 @@ while True:
     # else:
     #     swapLights(green_battery, red_battery)
     checkCondition(adc_moisture_converted, 0.8, green_moisture, red_moisture)
-    checkCondition(adc_battery_converted, 1, green_battery, red_battery)
+    checkCondition(adc_battery_converted, 2, green_battery, red_battery)
 
     print(f"Moisture: {adc_moisture_converted} || Battery: {adc_battery_converted}")
     sleep(10)
