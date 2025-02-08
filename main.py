@@ -28,6 +28,7 @@ def checkCondition(measurement, threshold, light_good, light_bad):
         swapLights(light_bad, light_good)
 
 
+sleep(5)
 while True:
     board.on()
     adc_moisture_converted = 3.3 - adc_moisture_value.read_u16() * conversion_factor
