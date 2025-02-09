@@ -43,9 +43,14 @@ def connectWifi(ssid, passwd):
 sleep(5)
 with open("wifi.json") as wifi_file:
     wifi_config = json.load(wifi_file)
+with open("email.json") as email_file:
+    email_config = json.load(email_file)
 
 print(wifi_config["ssid"])
+print(email_config["user"])
+
 connectWifi(wifi_config["ssid"], wifi_config["pass"])
+
 
 while True:
     board.on()
