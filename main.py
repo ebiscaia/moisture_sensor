@@ -3,6 +3,7 @@
 from machine import Pin, ADC
 from time import sleep
 import json
+import network
 
 # configure LED Pin as an output pin and create and led object for Pin class
 # then make the led blink in an infinite loop
@@ -29,11 +30,22 @@ def checkCondition(measurement, threshold, light_good, light_bad):
         swapLights(light_bad, light_good)
 
 
+def connectWifi(ssid, passwd):
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(ssid, passwd)
+    while not wlan.isconnected():
+        print("Waiting for connection...")
+        sleep(1)
+    print(wlan.ifconfig())
+
+
 sleep(5)
 with open("wifi.json") as wifi_file:
     wifi_config = json.load(wifi_file)
 
 print(wifi_config["ssid"])
+connectWifi(wifi_config["ssid"], wifi_config["pass"])
 
 while True:
     board.on()
