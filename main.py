@@ -30,6 +30,11 @@ def checkCondition(measurement, threshold, light_good, light_bad):
         swapLights(light_bad, light_good)
 
 
+def loadJson(file):
+    with open(file) as open_file:
+        return json.load(open_file)
+
+
 def connectWifi(ssid, passwd):
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
@@ -41,10 +46,8 @@ def connectWifi(ssid, passwd):
 
 
 sleep(5)
-with open("wifi.json") as wifi_file:
-    wifi_config = json.load(wifi_file)
-with open("email.json") as email_file:
-    email_config = json.load(email_file)
+wifi_config = loadJson("wifi.json")
+email_config = loadJson("email.json")
 
 print(wifi_config["ssid"])
 print(email_config["user"])
