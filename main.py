@@ -49,8 +49,6 @@ sleep(5)
 wifi_config = loadJson("wifi.json")
 email_config = loadJson("email.json")
 
-print(wifi_config["ssid"])
-print(email_config["user"])
 
 connectWifi(wifi_config["ssid"], wifi_config["pass"])
 
