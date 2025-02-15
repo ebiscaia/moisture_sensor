@@ -4,7 +4,6 @@ from machine import Pin, ADC
 from time import sleep
 import json
 import network
-import umail
 
 # configure LED Pin as an output pin and create and led object for Pin class
 # then make the led blink in an infinite loop
@@ -17,6 +16,7 @@ green_battery = Pin(14, Pin.OUT)
 adc_moisture_value = ADC(27)
 adc_battery_value = ADC(26)
 conversion_factor = 3.3 / 65536
+from umqtt.simple import MQTTClient
 
 
 def swapLights(light1, light2):
@@ -46,44 +46,31 @@ def connectWifi(ssid, passwd):
     print(wlan.ifconfig())
 
 
-def send_email(server, port, enc, user, passwd, recipients):
-    for recipient in recipients:
-        smtp = umail.SMTP(server, port, ssl=enc)  # Gmail's SSL port
-        smtp.login(user, passwd)
-        # for recipient in recipients:
-        smtp.to(recipient)
-        smtp.write("From:" + "RPi Pico" + "<" + user + ">\n")
-        smtp.write("To: " + recipient + "\n")
-        smtp.write("Subject:" + "Hello from Pico" + "\n")
-        smtp.write(
-            f"""
-        Dear {recipient},
+def connectMQTT(client, broker, port, user, passwd):
+    client = MQTTClient(client, broker, port, user, passwd)
+    client.connect()
+    return client
 
-        Don't forget to water the plants.
-        """
-        )
-        smtp.send()
-        smtp.quit()
 
 
 sleep(5)
 wifi_config = loadJson("wifi.json")
-email_config = loadJson("email.json")
+mqtt_config = loadJson("mqtt.json")
 
-# email-related variables
-sender_email = email_config["user"]
-sender_pass = email_config["pass"]
-smtp_server = email_config["server"]
-smtp_port = email_config["port"]
-smtp_enc = email_config["tls"]
-recipient_emails = email_config["recipients"]
+
+# mqtt-related variables
+mqtt_broker = mqtt_config["broker"]
+mqtt_port = mqtt_config["port"]
+mqtt_user = mqtt_config["user"]
+mqtt_password = mqtt_config["password"]
+mqtt_topic = mqtt_config["topic"]
+mqtt_client_id = mqtt_config["client_id"]
 
 
 connectWifi(wifi_config["ssid"], wifi_config["pass"])
-send_email(
-    smtp_server, smtp_port, smtp_enc, sender_email, sender_pass, recipient_emails
+mqtt_client = connectMQTT(
+    mqtt_client_id, mqtt_broker, mqtt_port, mqtt_user, mqtt_password
 )
-# send a test email
 
 
 while True:
@@ -102,4 +89,7 @@ while True:
     checkCondition(adc_battery_converted, 2, green_battery, red_battery)
 
     print(f"Moisture: {adc_moisture_converted} || Battery: {adc_battery_converted}")
+    mqtt_client.publish(f"{mqtt_topic}/moisture", str(adc_moisture_converted))
+    mqtt_client.publish(f"{mqtt_topic}/battery", str(adc_battery_converted))
+
     sleep(10)
