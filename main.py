@@ -4,18 +4,6 @@ from machine import Pin, ADC
 from time import sleep
 import json
 import network
-
-# configure LED Pin as an output pin and create and led object for Pin class
-# then make the led blink in an infinite loop
-board = Pin("LED", Pin.OUT)
-red_moisture = Pin(4, Pin.OUT)
-green_moisture = Pin(5, Pin.OUT)
-red_battery = Pin(15, Pin.OUT)
-green_battery = Pin(14, Pin.OUT)
-
-adc_moisture_value = ADC(27)
-adc_battery_value = ADC(26)
-conversion_factor = 3.3 / 65536
 from umqtt.simple import MQTTClient
 
 
@@ -52,6 +40,17 @@ def connectMQTT(client, broker, port, user, passwd):
     return client
 
 
+# configure LED Pin as an output pin and create and led object for Pin class
+# then make the led blink in an infinite loop
+board = Pin("LED", Pin.OUT)
+red_moisture = Pin(4, Pin.OUT)
+green_moisture = Pin(5, Pin.OUT)
+red_battery = Pin(15, Pin.OUT)
+green_battery = Pin(14, Pin.OUT)
+
+adc_moisture_value = ADC(27)
+adc_battery_value = ADC(26)
+conversion_factor = 3.3 / 65536
 
 sleep(5)
 wifi_config = loadJson("wifi.json")
