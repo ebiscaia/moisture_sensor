@@ -52,7 +52,6 @@ adc_moisture_value = ADC(27)
 adc_battery_value = ADC(26)
 conversion_factor = 3.3 / 65536
 
-sleep(5)
 wifi_config = loadJson("wifi.json")
 mqtt_config = loadJson("mqtt.json")
 
